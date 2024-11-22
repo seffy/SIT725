@@ -10,11 +10,22 @@ $(document).ready(function(){
       });
 
     $('#button3').click(function() {
-        $('#button1').css('background-color', 'blue');
+      $('#button1').css({
+        'background-color': 'orange',
+        'color': 'white'
+      });
       });
 
     $('#button4').click(function() {
-        $('#button1').css('background-color', 'green'); 
+      $('#button1').css({
+        'background-color': 'green',
+        'color': 'white'
+      });
+      });
+
+
+      $('#vgitbtn').click(function() {
+        window.open('https://github.com/seffy/SIT725/tree/main/Task%203.2P', '_blank');
       });
 	
 	
