@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's on my mind today?</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Import Google Icon Font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Import materialize.css -->
+    <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/materialize.min.js"></script>
+  
+</head>
+<body>
+
+    <div class="main">
+        <h2>What's on my mind today?</h2>
+
+    </div>
+
+
+    <div class="container-x">
+      
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label for="thoughts">Thoughts:</label>
+                <textarea id="thoughts" name="thoughts" rows="4" placeholder="Write what's on your mind..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="tags">Tags:</label>
+                <input type="text" id="tags" name="tags" placeholder="Enter tags (e.g., motivation, goals)">
+            </div>
+            <div class="form-actions">
+                <button type="reset" class="clear-btn">Clear</button>
+                <button type="submit" class="submit-btn">Submit</button>
+            </div>
+        </form>
+
+        
+                
+
+
+
+       
+    </div>
+
+  
+    
+    <div class="container"><div class="row" id="submitted-data">
+
+        
+        <!-- Real-time updates will appear here -->
+        <!-- Data will be populated here using Socket.IO -->
+    </div>
+</div>
+
+    
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+      
+    </script>
+
+
+
+
+
+</body>
+</html>

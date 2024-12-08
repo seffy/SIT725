@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 
 // Handle form submission
 app.post('/register', async (req, res) => {
-    const { name, age, phone, email } = req.body;
+    const { thoughts, tags } = req.body;
 
     const client = new MongoClient(uri, { useUnifiedTopology: true });
 

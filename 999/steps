@@ -1,0 +1,27 @@
+
+- D task, so it means:
+	- no code from me
+
+- q's regarding p5 and p6
+
+
+0. what is unit test, and why it is important
+    - frontend / backend testing
+1. create a new repo by importing the previous week's
+2. clone the new repo to local
+3. instal:
+    - mocha
+    - chai
+    - request
+4. update package.xml ("test": "mocha --reporter spec")
+
+5. start writing tests
+    - at least 1 for GET
+    - at least 1 for POST
+        - POST MUST have a rollback mechnism
+
+
+Show:
+    - server debug
+    - arguments
+    - removeCat (controller)

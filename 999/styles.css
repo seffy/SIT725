@@ -1,0 +1,127 @@
+
+   /* General Reset */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+html, body {
+    
+    color: #eee;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    background-image: linear-gradient(348deg, transparent 0%, transparent 76%,rgba(194, 194, 194,0.04) 76%, rgba(194, 194, 194,0.04) 93%,transparent 93%, transparent 100%),linear-gradient(150deg, transparent 0%, transparent 10%,rgba(194, 194, 194,0.04) 10%, rgba(194, 194, 194,0.04) 74%,transparent 74%, transparent 100%),linear-gradient(68deg, transparent 0%, transparent 36%,rgba(194, 194, 194,0.04) 36%, rgba(194, 194, 194,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(199deg, transparent 0%, transparent 37%,rgba(194, 194, 194,0.04) 37%, rgba(194, 194, 194,0.04) 47%,transparent 47%, transparent 100%),linear-gradient(90deg, rgb(0,0,0),rgb(0,0,0));
+}
+
+
+.container-y{
+    margin-top: 10%;
+    padding: 0;
+
+
+    width: 100%!important;
+
+}
+
+.container-z {
+    margin:  0 auto;
+    text-align: left;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+
+}
+
+.container-x {
+    margin:  0 auto;
+    text-align: left;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    width: 80%;
+
+}
+
+
+.button {
+    background-color: #3a1d4090;
+    margin-top: 10px;
+    border-radius: 99px;
+}
+
+.button:hover {
+    background-color: #3a1d40;
+    margin-top: 10px;
+    border-radius: 99px;
+}
+.text {
+    color:#aaaaaa;
+
+}
+.card {border-radius: 8px; border: 1px solid #3a1d40;  box-shadow: none; background: none;}
+
+.dateposted{
+    font-size: 9px;
+}
+
+.tags{
+    font-size: 9px;
+}
+
+.word-style {
+    background-color: #3a1d4090; /* Light gray background */
+    padding: 3px 8px;
+    margin: 2px;
+    border-radius: 99px;
+    display: inline-block;
+    color: #fff;
+    font-size: 10px;;
+}
+
+.modal{
+    min-height: 200px;
+   border-radius: 8px;
+}
+
+.btn {border-radius:99px; background-color: #3a1d4090;}
+.btn:hover {border-radius:99px; background-color: #3a1d40;}
+
+
+
+.bquote {
+    font-size: 1.5em; /* Large font size for emphasis */
+    font-style: italic; /* Italic text for a traditional quote feel */
+    color: #555; /* Neutral gray color */
+    text-align: left; /* Center-align the quote */
+
+    max-width: 600px; /* Restrict the width of the quote box */
+    position: relative; /* For pseudo-elements positioning */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.bquote:before, .quote:after {
+    content: '“'; /* Adds quotation marks */
+    font-size: 2.5em; /* Larger size for the marks */
+    color: #aaa; /* Stylish color for quotation marks */
+    position: absolute; /* Positioned relative to the quote box */
+
+}
+
+.buote:before {
+    left: 10px;
+}
+
+.bquote:after {
+    right: 10px;
+    transform: rotate(180deg); /* Flip the closing quote */
+
+}
+
+

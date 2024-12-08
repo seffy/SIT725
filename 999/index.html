@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<title>Thought Record</title>
+		  <!--Import Google Icon Font-->
+		  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
+		<link rel="stylesheet" href="styles.css">
+	</head>
+	<body>
+		<div class="container-y" style="height: 190px;">
+			<div >
+			
+				<div class="row">
+					
+					<div style="text-align: center;">
+						<h2> Thought Record</h2>
+						<a class="waves-effect waves-light btn button modal-trigger rad" id="clickMeButton" data-target="modal1"><i class="material-icons left">auto_fix_high</i>Whats on your mind?</a>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div id="modal1" class="modal">
+				<div class="row modal-content">
+
+
+
+					<form class="col s12">
+						<div class="row">
+						
+
+							<div class="input-field">
+								<textarea id="title" name="title" class="materialize-textarea" required></textarea>
+								<label for="title">What's on your mind...</label>
+							</div>
+							<div class="input-field">
+								<input type="text" id="tags" name="tags" placeholder="Enter tags (e.g., motivation, goals)">
+								<label for="tags">Tags</label>
+							</div>
+							<div class="form-actions" style="text-align: center;">
+								<button type="reset" class="btn  grey lighten-1">Clear</button>
+								<button type="submit" class="btn " id="formSubmit">Submit</button>
+							</div>
+
+						</div>
+	
+					
+					</form>
+
+
+
+				</div>
+			</div>
+
+
+			
+
+
+		</div>
+
+		<div class="container-z">	
+<div class="container-x">
+		<div class="row" id="card-section">
+		</div>
+		</div>
+	</div>
+		
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="scripts.js"></script>
+	</body>
+</html>

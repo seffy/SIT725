@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's on My Mind Today?</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Materialize CSS -->
+
+    <link rel="stylesheet" href="/css/materialize.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Materialize JS -->
+    <script src="script.js"></script>
+    <script src="/js/materialize.min.js"></script>
+    
+
+</head>
+<body>
+    <div class="container">
+        <h2>What's on My Mind Today?</h2>
+        <form id="thoughtForm">
+            <div class="input-field">
+                <textarea id="thoughts" name="thoughts" class="materialize-textarea" required></textarea>
+                <label for="thoughts">Thoughts</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="tags" name="tags" placeholder="Enter tags (e.g., motivation, goals)">
+                <label for="tags">Tags</label>
+            </div>
+            <div class="form-actions">
+                <button type="reset" class="btn grey lighten-1">Clear</button>
+                <button type="submit" class="btn blue">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <h4>Recent Thoughts</h4>
+        <div class="row" id="submitted-data">
+            <!-- Real-time updates will appear here -->
+        </div>
+        <h2>All Thoughts</h2>
+        <ul id="thoughtsList"></ul>
+
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+const socket = io();
+
+// Function to fetch all thoughts from the server
+async function fetchAllThoughts() {
+    try {
+        const response = await fetch('/getAllThoughts');
+        if (!response.ok) throw new Error('Network response was not ok');
+        const thoughts = await response.json();
+        updateThoughtsList(thoughts);
+    } catch (error) {
+        console.error('Error fetching thoughts:', error);
+    }
+}
+
+// Function to update the thoughts list in the DOM
+function updateThoughtsList(thoughts) {
+    const thoughtsList = document.getElementById('thoughtsList');
+    thoughtsList.innerHTML = ''; // Clear the list before updating
+    thoughts.forEach(thought => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${thought.thoughts} (Tags: ${thought.tags.join(', ')})`;
+        thoughtsList.appendChild(listItem);
+    });
+}
+
+// Fetch all thoughts when the page loads
+document.addEventListener('DOMContentLoaded', fetchAllThoughts);
+
+// Listen for new thoughts from the server
+socket.on('newThought', (newThought) => {
+    const thoughtsList = document.getElementById('thoughtsList');
+    const listItem = document.createElement('li');
+    listItem.textContent = `${newThought.thoughts} (Tags: ${newThought.tags.join(', ')})`;
+    thoughtsList.appendChild(listItem);
+});
+
+// Handle form submission
+document.getElementById('thoughtForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent page reload
+    const formData = new FormData(event.target);
+    const thoughts = formData.get('thoughts');
+    const tags = formData.get('tags');
+
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ thoughts, tags }),
+        });
+        const result = await response.json();
+        console.log(result.message);
+        event.target.reset(); // Clear the form
+    } catch (error) {
+        console.error('Error submitting form:', error);
+    }
+});
+
+
+    </script>
+   
+<!--
+   <script>
+        // Initialize Materialize components
+        document.addEventListener('DOMContentLoaded', () => {
+            M.AutoInit();
+        });
+
+        // Add Thought Cards to the DOM
+        function addThoughtCards(thoughts) {
+            const submittedDataDiv = $("#submitted-data");
+            thoughts.forEach(thought => {
+                let tags = thought.tags.length > 0 ? thought.tags.join(', ') : "No Tags";
+                let cardHTML = `
+                    <div class="col s12 m6 l4 thought-card">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title">${thought.thoughts}</span>
+                                <p>Date Submitted: ${new Date(thought.timestamp).toLocaleString()}</p>
+                                <p>Tags: ${tags}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                submittedDataDiv.prepend(cardHTML);
+            });
+        }
+
+        // Fetch All Thoughts and Render Them
+        function fetchAllThoughts() {
+            console.log("Fetching all thoughts...");
+            $.get('/getAllThoughts', (data) => {
+                console.log("Fetched data:", data);
+                if (!data || data.length === 0) {
+                    $("#submitted-data").html("<p>No thoughts available.</p>");
+                    return;
+                }
+                const sortedData = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                addThoughtCards(sortedData);
+            }).fail((err) => {
+                console.error('Error fetching data:', err);
+                $("#submitted-data").html("<p>Error loading thoughts. Please try again later.</p>");
+            });
+        }
+
+        // Real-Time Updates with Socket.IO
+        const socket = io();
+        socket.on('newThought', (data) => {
+            console.log("New thought received:", data);
+            addThoughtCards([data]);
+        });
+
+        // Handle Form Submission
+        $("#thoughtForm").on("submit", function (e) {
+            e.preventDefault();
+            const thoughts = $("#thoughts").val();
+            const tags = $("#tags").val();
+
+            $.post('/register', { thoughts, tags }, (response) => {
+                console.log("Form submitted successfully:", response);
+                M.toast({ html: 'Thought submitted successfully!' });
+                $("#thoughtForm")[0].reset(); // Reset the form
+            }).fail((err) => {
+                console.error("Error submitting form:", err);
+                M.toast({ html: 'Error submitting thought. Please try again.' });
+            });
+        });
+
+        // Document Ready
+        $(document).ready(() => {
+            fetchAllThoughts(); // Initial fetch
+        });
+    </script> 
+
+-->
+
+
+</body>
+</html>
