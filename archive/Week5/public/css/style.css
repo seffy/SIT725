@@ -1,0 +1,250 @@
+   /* General Reset */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+body {
+  background-color: #f2f2f7;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover; 
+    color: #333;
+    font-family: "Open Sans";
+
+    height: 100vh;
+    padding: 20px;
+}
+
+.main {
+
+    width: 100%!important;
+    justify-content: center;
+    align-items: center;
+        
+}
+
+.container-x {
+    background: #fff;
+    border-radius: 12px;
+    width: 40%;
+    padding: 30px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin:  0 auto;
+}
+
+.tr-title {
+    font-size: 64px;
+    line-height: 1.0625;
+font-weight: 600;
+letter-spacing: -0.009em;
+
+    margin-bottom: 20px;
+    color: #1c1c1e;
+    text-align: center;;
+}
+input, select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d2d2d7;
+    background-color: #f9f9f9;
+
+    color: #333;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #0071e3;
+    background-color: #fff;
+}
+
+input[type="text"]{ padding: 20px 10px!important; line-height: 28px!important; font-size: 30px!important;}
+
+
+button {
+    background-color: #005bb5;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 99px!important;
+    margin: 20px;
+    width: 120px;
+    padding: 12px;
+    border-radius: 8px;
+  
+}
+
+button:hover {
+    background-color: #005bb595;
+   
+}
+
+.submit-btn {
+    background-color: #0071e3;
+    color: white;
+    border-radius: 99px;
+}
+
+.clear-btn {
+    border: 1px solid #aaa;
+    color: #333;
+    border-radius: 99px;
+    
+}
+
+.clear-btn:hover {
+    background-color: #33333390!important;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+
+
+.datesubmitted {margin-bottom: 8px; color: #aaa;  font-size: 12px; text-align: right;}
+.text-white {color:#fafafa}
+
+.object-id {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 5px;
+    text-align: right;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+/* Container for the chat */
+.chat-container {
+    max-width: 500px;
+    margin: 5px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    padding: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  
+  /* Chat bubble */
+  .chat-bubble {
+    position: relative;
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease-in-out;
+  }
+  
+  .chat-bubble:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Action buttons at the top */
+  .chat-actions {
+    display: inline;
+    margin-bottom: 5px;
+    margin-left: 5px;
+  }
+  
+  /* Button styles */
+  .chat-btn {
+    background-color: #f3f4f6;
+    color: #6d6d6d;
+    border: none;
+cursor: pointer;
+display: inline-block;
+text-align: center;
+white-space: nowrap;
+font-size: 12px;
+line-height: 1.17648;
+font-weight: 400;
+letter-spacing: -0.022em;
+min-width: 28px;
+height: 32px;
+
+    
+  }
+  
+  
+
+  
+  /* Chat text */
+  .chat-text {
+    font-size: 20px!important;
+    color: #1c1c1e;
+    margin: 0;
+    line-height: 1.6;
+    font-weight: 400;
+    word-wrap: break-word;
+    margin: 20px;
+
+  }
+  
+
+  /* Ellipsis Button Styles */
+.c-action-buttons-top {
+text-align: right!important;
+align-items: right!important;
+margin-top: 2px;
+
+}
+
+.action-btn {
+    font-size: 9px!important;
+   
+}
+
+i.small {
+    font-size: 1.5rem!important;
+    color:#aaa;
+}
+i.small:hover {
+    font-size: 1.5rem!important;
+    color:red;
+}
+
+.modal{
+margin-top: 10%;
+    max-width: 600px;
+    border-radius: 10px;
+
+}
+.label {
+    font-size: 20px;
+    color: #6d6d6d;
+    line-height: 1.0625;
+font-weight: 600;
+letter-spacing: -0.009em;
+
+    margin-bottom: 20px;
+}
+.modal-btn {
+    margin: 0 auto;
+    text-align: center;;
+}
+  

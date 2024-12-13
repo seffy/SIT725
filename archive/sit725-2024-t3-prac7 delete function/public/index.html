@@ -113,27 +113,22 @@ function updateThoughtsList(thoughts) {
 
     thoughts.forEach(thought => {
         const styledTags = styleTags(thought.tags || []);
-        const formattedDate = formatTimestampToDate(thought.timestamp);
+        const formattedDate = formatTimestampToDate(thought.timestamp); // Convert timestamp
         const card = `
             <div class="col s12 m6 l4 thought-card" data-id="${thought._id}">
                 <div class="card">
                     <div class="card-content">
-                         <p class="datesubmitted">ID: ${thought._id}</p>
                         <p class="datesubmitted">Date Submitted: ${formattedDate}</p>
-                        <div class="">
-                            <label  for="thoughtInput_${thought._id}"></label>
-                            <input type="text" id="thoughtInput_${thought._id}" value="${thought.thoughts || 'N/A'}" readonly class="input-field thoughts ">
+                        <p class="object-id">ID: ${thought._id || 'N/A'}</p> 
+                        <div class="quote-container">
+                            <div class="left-quote">“</div>
+                            <p class="quote-text">
+                                <span class="card-title"> ${thought.thoughts || 'N/A'}</span>
+                            </p>  
                         </div>
-                        <div class="tags-container">
-                            <label for="tagsInput_${thought._id}">Tags:</label>
-                            <input type="text" id="tagsInput_${thought._id}" value="${thought.tags ? thought.tags.join(', ') : 'None'}" readonly class="input-field">
-                        </div>
+                        <p class="tags">Tags: ${styledTags || 'None'}</p>
                     </div>
-                    <div class="btn-foot">
-                        <button type="button" class="btn blue update-btn">Update</button>
-                        <button type="button" class="btn green save-btn" style="display: none;">Save</button>
-                        <button type="button" class="btn grey delete-btn">Delete</button>
-                    </div>
+                    <div class="btn-foot"><button type="button" class="btn grey delete-btn">Delete</button></div>
                 </div>
             </div>`;
         thoughtsList.innerHTML += card;
@@ -148,26 +143,22 @@ socket.on('newThought', (newThought) => {
     const styledTags = styleTags(newThought.tags || []);
     const formattedDate = formatTimestampToDate(newThought.timestamp); // Convert timestamp
     const card = `
-       <div class="col s12 m6 l4 thought-card" data-id="${newThought._id}">
-                <div class="card">
-                    <div class="card-content">
-                        <p class="datesubmitted">Date Submitted: ${formattedDate}</p>
-                        <div class="">
-                            <label for="thoughtInput_${newThought._id}">Thought:</label>
-                            <input type="text" id="thoughtInput_${newThought._id}" value="${newThought.thoughts || 'N/A'}" readonly class="input-field thoughts">
-                        </div>
-                        <div class="tags-container">
-                            <label for="tagsInput_${newThought._id}">Tags:</label>
-                            <input type="text" id="tagsInput_${newThought._id}" value="${newThought.tags ? newThought.tags.join(', ') : 'None'}" readonly class="input-field">
-                        </div>
+        <div class="col s12 m6 l4 thought-card" data-id="${newThought._id}">
+            <div class="card">
+                <div class="card-content">
+                    <p class="datesubmitted">Date Submitted: ${formattedDate}</p>
+                    <p class="object-id">ID: ${newThought._id || 'N/A'}</p> 
+                    <div class="quote-container">
+                        <div class="left-quote">“</div>
+                        <p class="quote-text">
+                            <span class="card-title"> ${newThought.thoughts || 'N/A'}</span>
+                        </p>
                     </div>
-                    <div class="btn-foot">
-                        <button type="button" class="btn blue update-btn">Update</button>
-                        <button type="button" class="btn green save-btn" style="display: none;">Save</button>
-                        <button type="button" class="btn grey delete-btn">Delete</button>
-                    </div>
+                    <p class="tags">Tags: ${styledTags || 'None'}</p>
                 </div>
-            </div>`;
+                <div class="btn-foot"><button type="button" class="btn grey delete-btn">Delete</button></div>
+            </div>
+        </div>`;
     document.getElementById('thoughtsList').innerHTML += card;
 });
 
@@ -218,73 +209,83 @@ document.getElementById('thoughtsList').addEventListener('click', async (event) 
     }
 });
 
+    </script>
+   
+<!--
+   <script>
+        // Initialize Materialize components
+        document.addEventListener('DOMContentLoaded', () => {
+            M.AutoInit();
+        });
 
-document.getElementById('thoughtsList').addEventListener('click', async (event) => {
-    const card = event.target.closest('.thought-card');
-    if (!card) return;
-
-    const thoughtId = card.getAttribute('data-id');
-    const thoughtInput = card.querySelector(`#thoughtInput_${thoughtId}`);
-    const tagsInput = card.querySelector(`#tagsInput_${thoughtId}`);
-    const updateButton = card.querySelector('.update-btn');
-    const saveButton = card.querySelector('.save-btn');
-
-    if (event.target.classList.contains('update-btn')) {
-        // Enable editing
-        thoughtInput.removeAttribute('readonly');
-        tagsInput.removeAttribute('readonly');
-        thoughtInput.classList.add('editable');
-        tagsInput.classList.add('editable');
-
-        // Show Save button and hide Update button
-        updateButton.style.display = 'none';
-        saveButton.style.display = 'inline-block';
-    }
-
-    if (event.target.classList.contains('save-btn')) {
-        // Get updated values
-        const updatedThought = thoughtInput.value;
-        const updatedTags = tagsInput.value.split(',').map(tag => tag.trim());
-
-        try {
-            // Send updated values to the server
-            const response = await fetch(`/updateThought/${thoughtId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    thoughts: updatedThought,
-                    tags: updatedTags,
-                }),
+        // Add Thought Cards to the DOM
+        function addThoughtCards(thoughts) {
+            const submittedDataDiv = $("#submitted-data");
+            thoughts.forEach(thought => {
+                let tags = thought.tags.length > 0 ? thought.tags.join(', ') : "No Tags";
+                let cardHTML = `
+                    <div class="col s12 m6 l4 thought-card">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title">${thought.thoughts}</span>
+                                <p>Date Submitted: ${new Date(thought.timestamp).toLocaleString()}</p>
+                                <p>Tags: ${tags}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                submittedDataDiv.prepend(cardHTML);
             });
-
-            if (response.ok) {
-                alert('Thought updated successfully!');
-                const updatedData = await response.json();
-
-                // Reset fields to readonly
-                thoughtInput.setAttribute('readonly', 'readonly');
-                tagsInput.setAttribute('readonly', 'readonly');
-                thoughtInput.classList.remove('editable');
-                tagsInput.classList.remove('editable');
-
-                // Update UI with new values
-                card.querySelector('.datesubmitted').innerText = `Date Submitted: ${formatTimestampToDate(updatedData.updatedAt)}`;
-
-                // Show Update button and hide Save button
-                updateButton.style.display = 'inline-block';
-                saveButton.style.display = 'none';
-            } else {
-                console.error('Failed to update thought');
-                alert('Failed to update the thought. Please try again.');
-            }
-        } catch (error) {
-            console.error('Error updating thought:', error);
-            alert('An error occurred while updating the thought.');
         }
-    }
-});
-  </script>
+
+        // Fetch All Thoughts and Render Them
+        function fetchAllThoughts() {
+            console.log("Fetching all thoughts...");
+            $.get('/getAllThoughts', (data) => {
+                console.log("Fetched data:", data);
+                if (!data || data.length === 0) {
+                    $("#submitted-data").html("<p>No thoughts available.</p>");
+                    return;
+                }
+                const sortedData = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                addThoughtCards(sortedData);
+            }).fail((err) => {
+                console.error('Error fetching data:', err);
+                $("#submitted-data").html("<p>Error loading thoughts. Please try again later.</p>");
+            });
+        }
+
+        // Real-Time Updates with Socket.IO
+        const socket = io();
+        socket.on('newThought', (data) => {
+            console.log("New thought received:", data);
+            addThoughtCards([data]);
+        });
+
+        // Handle Form Submission
+        $("#thoughtForm").on("submit", function (e) {
+            e.preventDefault();
+            const thoughts = $("#thoughts").val();
+            const tags = $("#tags").val();
+
+            $.post('/register', { thoughts, tags }, (response) => {
+                console.log("Form submitted successfully:", response);
+                M.toast({ html: 'Thought submitted successfully!' });
+                $("#thoughtForm")[0].reset(); // Reset the form
+            }).fail((err) => {
+                console.error("Error submitting form:", err);
+                M.toast({ html: 'Error submitting thought. Please try again.' });
+            });
+        });
+
+        // Document Ready
+        $(document).ready(() => {
+            fetchAllThoughts(); // Initial fetch
+        });
+    </script> 
+
+-->
+
+
 </body>
 </html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's on My Mind Today?</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Materialize CSS -->
+
+    <link rel="stylesheet" href="/css/materialize.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Materialize JS -->
+    <script src="script.js"></script>
+    <script src="/js/materialize.min.js"></script>
+    
+
+</head>
+<body>
+    <div class="container">
+
+
+        <div class="row">
+					
+            <div style="text-align: center;">
+                <h2 class="text-white"> Thought Record</h2>
+                <button data-target="modal1" class="btn modal-trigger" style="width: 300px;">Whats on your mind?</button>
+
+            </div>
+        </div>
+
+
+        <div id="modal1" class="modal">
+            <div class="row modal-content">
+        <form id="thoughtForm">
+            <div class="input-field">
+                <textarea id="thoughts" name="thoughts" class="materialize-textarea" required></textarea>
+                <label for="thoughts">Thoughts</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="tags" name="tags" placeholder="Enter tags (e.g., motivation, goals)">
+                <label for="tags">Tags</label>
+            </div>
+            <div class="form-actions">
+                <button type="reset" class="btn grey lighten-1">Clear</button>
+                <button id="submit-button" type="submit" class="btn blue">Submit</button>
+            </div>
+        </form>
+    </div></div>
+
+
+    </div>
+
+    <div class="container">
+        <h5 class="text-white">Recent Thoughts</h5>
+        <div class="row" id="submitted-data">
+            <!-- Real-time updates will appear here -->
+        </div>
+  
+        <ul id="thoughtsList"></ul>
+
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+const socket = io();
+// Function to fetch all thoughts from the server
+async function fetchAllThoughts() {
+    try {
+        const response = await fetch('/getAllThoughts'); // Fetch all thoughts
+        if (!response.ok) throw new Error('Network response was not ok');
+        const thoughts = await response.json();
+        updateThoughtsList(thoughts);
+    } catch (error) {
+        console.error('Error fetching thoughts:', error);
+    }
+}
+
+// Format timestamp to a readable date
+function formatTimestampToDate(timestamp) {
+    if (!timestamp) return 'N/A';
+    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    return new Date(timestamp).toLocaleString(undefined, options);
+}
+
+// Style tags for display
+function styleTags(tags) {
+    if (!tags) return ''; // Handle undefined or null cases
+    if (Array.isArray(tags)) {
+        tags = tags.join(' '); // Convert array to a space-separated string
+    }
+
+    return tags.split(' ').map(tag => `
+        <span style="background-color: #cccccc; color: #ffffff; padding: 3px 8px; border-radius: 4px; margin-right: 5px; font-weight: bold;">
+            ${tag}
+        </span>
+    `).join(' ');
+}
+
+// Update the thoughts list in the DOM
+function updateThoughtsList(thoughts) {
+    const thoughtsList = document.getElementById('thoughtsList');
+    thoughtsList.innerHTML = ''; // Clear the list
+
+    thoughts.forEach(thought => {
+        const styledTags = styleTags(thought.tags || []);
+        const formattedDate = formatTimestampToDate(thought.timestamp); // Convert timestamp
+        const card = `
+            <div class="col s12 m6 l4 thought-card">
+                <div class="card">
+                    <div class="card-content">
+                    <p class="datesubmitted">Date Submitted: ${formattedDate}</p>
+                      <p class="object-id">ID: ${thought._id || 'N/A'}</p> 
+                        <div class="quote-container">
+                            <div class="left-quote">“</div>
+                            <p class="quote-text">
+                                <span class="card-title"> ${thought.thoughts || 'N/A'}</span>
+                            </p>  
+                        </div>
+                        <p class="tags">Tags: ${styledTags || 'None'}</p>
+                    </div>
+                     <div class="btn-foot"><button type="button" class="btn grey">Delete</button></div>
+                </div>
+            </div>`;
+        thoughtsList.innerHTML += card;
+    });
+}
+
+// Fetch all thoughts when the page loads
+document.addEventListener('DOMContentLoaded', fetchAllThoughts);
+
+// Listen for new thoughts from the server
+socket.on('newThought', (newThought) => {
+    const styledTags = styleTags(newThought.tags || []);
+    const formattedDate = formatTimestampToDate(newThought.timestamp); // Convert timestamp
+    const card = `
+        <div class="col s12 m6 l4 thought-card">
+            <div class="card">
+                <div class="card-content">
+                       <p class="datesubmitted">Date Submitted: ${formattedDate}</p>
+                       <p class="object-id">ID: ${newThought._id || 'N/A'}</p> 
+                    <div class="quote-container">
+                        <div class="left-quote">“</div>
+                        <p class="quote-text">
+                            <span class="card-title"> ${newThought.thoughts || 'N/A'}</span>
+                        </p>
+                    </div>
+                    <p class="tags">Tags: ${styledTags || 'None'}</p>
+                </div>
+                <div class="btn-foot"><button type="button" class="btn blue">Delete</button></div>
+            </div>
+        </div>`;
+    document.getElementById('thoughtsList').innerHTML += card;
+});
+
+// Handle form submission
+document.getElementById('thoughtForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent page reload
+    const formData = new FormData(event.target);
+    const thoughts = formData.get('thoughts');
+    const tags = formData.get('tags');
+    const timestamp = Date.now(); // Use timestamp
+
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ thoughts, tags, timestamp }), // Send timestamp
+        });
+        const result = await response.json();
+        console.log(result.message);
+        event.target.reset(); // Clear the form
+    } catch (error) {
+        console.error('Error submitting form:', error);
+    }
+});
+
+
+    </script>
+   
+<!--
+   <script>
+        // Initialize Materialize components
+        document.addEventListener('DOMContentLoaded', () => {
+            M.AutoInit();
+        });
+
+        // Add Thought Cards to the DOM
+        function addThoughtCards(thoughts) {
+            const submittedDataDiv = $("#submitted-data");
+            thoughts.forEach(thought => {
+                let tags = thought.tags.length > 0 ? thought.tags.join(', ') : "No Tags";
+                let cardHTML = `
+                    <div class="col s12 m6 l4 thought-card">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title">${thought.thoughts}</span>
+                                <p>Date Submitted: ${new Date(thought.timestamp).toLocaleString()}</p>
+                                <p>Tags: ${tags}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                submittedDataDiv.prepend(cardHTML);
+            });
+        }
+
+        // Fetch All Thoughts and Render Them
+        function fetchAllThoughts() {
+            console.log("Fetching all thoughts...");
+            $.get('/getAllThoughts', (data) => {
+                console.log("Fetched data:", data);
+                if (!data || data.length === 0) {
+                    $("#submitted-data").html("<p>No thoughts available.</p>");
+                    return;
+                }
+                const sortedData = data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                addThoughtCards(sortedData);
+            }).fail((err) => {
+                console.error('Error fetching data:', err);
+                $("#submitted-data").html("<p>Error loading thoughts. Please try again later.</p>");
+            });
+        }
+
+        // Real-Time Updates with Socket.IO
+        const socket = io();
+        socket.on('newThought', (data) => {
+            console.log("New thought received:", data);
+            addThoughtCards([data]);
+        });
+
+        // Handle Form Submission
+        $("#thoughtForm").on("submit", function (e) {
+            e.preventDefault();
+            const thoughts = $("#thoughts").val();
+            const tags = $("#tags").val();
+
+            $.post('/register', { thoughts, tags }, (response) => {
+                console.log("Form submitted successfully:", response);
+                M.toast({ html: 'Thought submitted successfully!' });
+                $("#thoughtForm")[0].reset(); // Reset the form
+            }).fail((err) => {
+                console.error("Error submitting form:", err);
+                M.toast({ html: 'Error submitting thought. Please try again.' });
+            });
+        });
+
+        // Document Ready
+        $(document).ready(() => {
+            fetchAllThoughts(); // Initial fetch
+        });
+    </script> 
+
+-->
+
+
+</body>
+</html>
