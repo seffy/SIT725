@@ -13,7 +13,6 @@ socket.on('messages-updated', (sortedMessages) => {
   sortedMessages.forEach(renderMessage); // Render each message in the correct order
 });
 
-
 socket.on('message-deleted', () => {
   fetchMessages(); // Refresh all messages
 });

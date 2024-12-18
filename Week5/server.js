@@ -47,8 +47,6 @@ app.get('/messages', async (req, res) => {
   }
 });
 
-
-
 app.post('/messages', async (req, res) => {
   try {
     const { text } = req.body;
