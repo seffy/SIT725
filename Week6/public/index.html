@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Whats on your mind?</title>
+      <!-- Google Fonts & Icons-->
+      <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!-- CSS -->
+      <link rel="stylesheet" href="css/materialize.min.css">
+      <link rel="stylesheet" href="css/style.css">
+      <!-- jQuery -->
+      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      <!-- Materialize JS -->
+      <script src="js/materialize.min.js"></script>
+   </head>
+   <body>
+      <div class="container">
+         <div style="text-align: center;">
+            <h1 class="tr-title">Thought Record</h1>
+            <button data-target="modal1" class="button modal-trigger" style="width: 250px;">Whats on your mind?</button>
+         </div>
+         <div id="modal1" class="modal">
+            <div class="row modal-content">
+               <span class="close" id="modal-close">&times;</span>
+               <p  class="label">What's on your mind?</p>
+               <div class="input-field">
+                  <input type="text" id="messageInput" placeholder="Enter a message" />
+               </div>
+               <div class="modal-btn">
+                  <button id="submit-button" type="submit" class="button" onclick="addMessage()">Submit</button>
+               </div>
+            </div>
+         </div>
+         <div id="messages"></div>
+      </div>
+      <!-- socket.io, script.js, and controller -->
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="js/script.js"></script>
+      <script src="controller/controller.js"></script>
+   </body>
+</html>
+
+
+
